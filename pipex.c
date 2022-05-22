@@ -138,7 +138,6 @@ void	parent_process(t_list *elem, int pid, int *fd_file, int *fds)
 	int	status;
 
 	waitpid(pid, &status, 0);
-	close(fd_file[0]);
 	if (!elem->next)
 	{
 		close(fd_file[0]);
