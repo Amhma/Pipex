@@ -20,7 +20,7 @@ void	open_file(int ac, char **av, int *fd_in, int *fd_out)
 {
 	if (ft_strcmp(av[1], "here_doc") != 0)
 	{
-		*fd_in = open(av[1], O_RDONLY);	
+		*fd_in = open(av[1], O_RDONLY, 0644);	
 		if (*fd_in == -1)
 		{
 			perror("open ");
@@ -30,11 +30,11 @@ void	open_file(int ac, char **av, int *fd_in, int *fd_out)
 	else
 		*fd_in = 0;
 	if (ft_strcmp(av[1], "here_doc") == 0)
-		*fd_out = open(av[ac - 1], O_CREAT | O_RDWR | O_APPEND);
+		*fd_out = open(av[ac - 1], O_CREAT | O_RDWR | O_APPEND, 0644);
 	else
 	{
 		unlink(av[ac - 1]);
-		*fd_out = open(av[ac - 1], O_CREAT | O_RDWR);
+		*fd_out = open(av[ac - 1], O_CREAT | O_RDWR, 0644);
 	}
 	if (*fd_out == -1)
 	{
@@ -85,30 +85,39 @@ void	free_array(char **arg)
 
 char	*find_cmd(t_list *elem, char **env)
 {
-	char	path[256];
+	char	*path;
+	char	*temp;
 	char	**env_pth;
 	int		i;
 	int		y;
 
 	i = -1;
+	if (ft_strstr(elem->arg[0], "/"))
+	{
+		path = ft_strjoin("", elem->arg[0]);
+		if (access(path, F_OK) == 0)
+			return (path);
+		free(path);
+	}
 	while (env[++i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
 			y = -1;
 			env_pth = ft_split(env[i] + 5, ':');
-			while (env_path[++y])
-			{
-				path = ft_strlcpy(path, env_path[y], ft_strlen(env_pth[y]) + 1);
-				path = ft_strcat(path, "/");
-				path = ft_strcat(path, elem->arg[0]);
+			while (env_pth[++y])
+			{	
+				temp = ft_strjoin(env_pth[y], "/");
+				path = ft_strjoin(temp, elem->arg[0]);
+				free(temp);
 				if (access(path, F_OK) == 0)
 				{
-					free_array(env_path);
+					free_array(env_pth);
 					return (path);
 				}
+				free(path);
 			}
-			free(env_path);
+			free(env_pth);
 		}
 	}
 	return (NULL);
@@ -129,7 +138,7 @@ void	child_process(t_list *elem, int *fd_file, int *fds, char **env)
 	close(fd_file[0]);
 	close(fd_file[1]);
 	execve(path, elem->arg, env);
-	perror("execve :")
+	perror("execve :");
 	exit(EXIT_FAILURE);
 }
 
@@ -138,6 +147,7 @@ void	parent_process(t_list *elem, int pid, int *fd_file, int *fds)
 	int	status;
 
 	waitpid(pid, &status, 0);
+	close(fd_file[0]);
 	if (!elem->next)
 	{
 		close(fd_file[0]);
@@ -146,13 +156,15 @@ void	parent_process(t_list *elem, int pid, int *fd_file, int *fds)
 		close(fds[1]);
 	}
 	else
+	{
 		close(fd_file[0]);	
-	fd_file[0] = dup2(fds[0]);
-	close(fds[0]);
-	close(fds[1]);
+		fd_file[0] = dup(fds[0]);
+		close(fds[0]);
+		close(fds[1]);
+	}
 }
 
-void	process(t_list **cmd, int *fd_file, char **env)
+void	process_pipex(t_list **cmd, int *fd_file, char **env)
 {
 	int		fds[2];
 	int		pid;
@@ -174,7 +186,7 @@ void	process(t_list **cmd, int *fd_file, char **env)
 			child_process(elem, fd_file, fds, env);
 		else
 			parent_process(elem, pid, fd_file, fds);
-		*elem = (*elem)->next;
+		elem = elem->next;
 	}
 }
 
@@ -185,17 +197,17 @@ void	process(t_list **cmd, int *fd_file, char **env)
 int	main(int ac, char **av, char **env)
 {
 	t_list	*cmd;
-	t_list	*elem;
+//	t_list	*elem;
 	int		fd_file[2];
 
 	parse(ac, av, &cmd, fd_file);
-	process(&cmd, fd_file, env);
-	for (elem = cmd; elem; elem = elem->next)
+	process_pipex(&cmd, fd_file, env);
+/*	for (elem = cmd; elem; elem = elem->next)
 	{
 		for (int i = 0; elem->arg[i]; i++)
 			ft_putendl_fd(elem->arg[i], 1);
 		ft_printf("fd_in : %d\n", elem->fd_in);
 		ft_printf("fd_out : %d\n", elem->fd_out);
 	}
-	return (0);
+*/	return (0);
 }
