@@ -9,7 +9,7 @@ SRC		= ft_itoa.c	ft_putstr_fd.c	ft_strmapi.c \
 			ft_strcat.c ft_strcmp.c ft_strncat.c ft_strstr.c \
 			ft_calloc.c	ft_memcpy.c	ft_strdup.c	ft_strrchr.c \
 			ft_isalnum.c	ft_memmove.c	ft_striteri.c	ft_strtrim.c \
-			ft_isalpha.c	ft_memset.c	ft_strjoin.c	ft_substr.c \
+			ft_isalpha.c	ft_memset.c	ft_strjoin.c ft_strjoin2.c ft_substr.c \
 			ft_isascii.c	ft_putchar_fd.c	ft_strlcat.c	ft_tolower.c \
 			ft_isdigit.c	ft_putendl_fd.c	ft_strlcpy.c	ft_toupper.c \
 			ft_isprint.c	ft_putnbr_fd.c	ft_strlen.c \

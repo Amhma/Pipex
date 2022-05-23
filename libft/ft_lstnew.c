@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amahla <amahla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 12:31:18 by amahla            #+#    #+#             */
-/*   Updated: 2022/05/02 12:31:20 by amahla           ###   ########.fr       */
+/*   Updated: 2022/05/23 15:41:24 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ t_list	*ft_lstnew(char **arg, int fd_in, int fd_out)
 	elem->arg = arg;
 	elem->fd_in = fd_in;
 	elem->fd_out = fd_out;
+	elem->next = NULL;
 	return (elem);
 }

@@ -6,7 +6,7 @@
 /*   By: amahla <amahla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 12:55:30 by amahla            #+#    #+#             */
-/*   Updated: 2022/05/09 14:24:34 by amahla           ###   ########.fr       */
+/*   Updated: 2022/05/23 18:22:25 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# define BUFFER_SIZE 32
+# define BUFFER_SIZE 1
 
 //		get_next_line.c
 char	*get_next_line(int fd);
