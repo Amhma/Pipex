@@ -6,7 +6,7 @@
 /*   By: amahla <amahla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 12:37:51 by amahla            #+#    #+#             */
-/*   Updated: 2022/05/23 17:57:09 by amahla           ###   ########.fr       */
+/*   Updated: 2022/05/25 12:30:54 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 typedef struct s_list
 {
 	char			**arg;
-	int				fd_in;
-	int				fd_out;
 	struct s_list	*next;
 }					t_list;
 
@@ -73,7 +71,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 /* bonus */
-t_list	*ft_lstnew(char **arg, int fd_in, int fd_out);
+t_list	*ft_lstnew(char **arg);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);

@@ -6,7 +6,7 @@
 /*   By: amahla <amahla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 16:11:18 by amahla            #+#    #+#             */
-/*   Updated: 2022/05/24 17:17:28 by amahla           ###   ########.fr       */
+/*   Updated: 2022/05/25 12:31:49 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ void	parse(int ac, char **av, t_list **cmd, int *fd_file)
 	while (i < ac - 1)
 	{
 		if ((ft_strcmp(av[1], "here_doc") == 0 && i == 3) || i == 2)
-			ft_lstadd_back(cmd, ft_lstnew(ft_split(av[i], ' '), fd_file[0], 0));
+			ft_lstadd_back(cmd, ft_lstnew(ft_split(av[i], ' ')));
 		else if (i == ac - 2)
-			ft_lstadd_back(cmd, ft_lstnew(ft_split(av[i], ' '), 0, fd_file[1]));
+			ft_lstadd_back(cmd, ft_lstnew(ft_split(av[i], ' ')));
 		else
-			ft_lstadd_back(cmd, ft_lstnew(ft_split(av[i], ' '), 0, 0));
+			ft_lstadd_back(cmd, ft_lstnew(ft_split(av[i], ' ')));
 		if (ft_lstsize(*cmd) != y++)
 			clear_all(cmd, fd_file, NULL);
 		i++;

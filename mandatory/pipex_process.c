@@ -6,7 +6,7 @@
 /*   By: amahla <amahla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 17:22:16 by amahla            #+#    #+#             */
-/*   Updated: 2022/05/24 18:50:43 by amahla           ###   ########.fr       */
+/*   Updated: 2022/05/25 13:40:07 by amahla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ char	*find_cmd(t_list *elem, char **env)
 
 	i = 0;
 	path = NULL;
+	env_path = NULL;
 	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
 		i++;
-	if (!env[i])
-		return (NULL);
 	if (ft_strstr(elem->arg[0], "/") && access(elem->arg[0], F_OK) == 0)
 		path = ft_strdup(elem->arg[0]);
-	env_path = ft_split(env[i] + 5, ':');
+	if (env[i])
+		env_path = ft_split(env[i] + 5, ':');
 	i = -1;
-	while (!path && env_path[++i])
+	while (env_path && !path && env_path[++i])
 	{	
 		path = ft_strjoin2(env_path[i], "/", elem->arg[0]);
 		if (access(path, F_OK) == 0)
@@ -46,7 +46,8 @@ char	*find_cmd(t_list *elem, char **env)
 		free(path);
 		path = NULL;
 	}
-	free_array(env_path);
+	if (env_path)
+		free_array(env_path);
 	return (path);
 }
 
@@ -78,20 +79,13 @@ int	parent_process(t_list *elem, int pid, int *fd_file, int *fds)
 	int	status;
 
 	waitpid(pid, &status, 0);
+	close(fd_file[0]);
 	if (!elem->next)
-	{
-		close(fd_file[0]);
 		close(fd_file[1]);
-		close(fds[0]);
-		close(fds[1]);
-	}
 	else
-	{
-		close(fd_file[0]);
 		fd_file[0] = dup(fds[0]);
-		close(fds[0]);
-		close(fds[1]);
-	}
+	close(fds[0]);
+	close(fds[1]);
 	return (status);
 }
 

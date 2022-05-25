@@ -1,4 +1,5 @@
 NAME	= pipex
+BONUS	= ./bonus/../pipex
 CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra
 INC		= -I libft/includes/ -I includes
@@ -11,13 +12,15 @@ RM		= rm -f
 
 all			: $(NAME)
 
+bonus		: $(BONUS)
+
 $(NAME) 	: $(OBJ)
 	make -C libft
 	$(CC) -o $@ $^ $(LIB)
 
-bonus 		: $(OBJ_BNS)
+$(BONUS) 	: $(OBJ_BNS)
 	make -C libft
-	$(CC) -o $(NAME) $^ $(LIB)
+	$(CC) -o $@ $^ $(LIB)
 
 .c.o		:
 	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
